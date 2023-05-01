@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() => runApp(GetMaterialApp(home: Home()));
+import 'ecommerce/view/screens/home.dart';
+
+void main() => runApp(
+      GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          useMaterial3: true,
+          primarySwatch: Colors.purple,
+          fontFamily: "Euclid Flex",
+        ),
+        home: const HomePage(),
+      ),
+    );
 
 class Controller extends GetxController {
   // Create a count variable and make it observable by
@@ -22,17 +34,39 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Wrap the widget that'll keep changing with Obx Widget.
-        title: Obx(
-          () => Text(
-            "Clicks: ${controller.count}",
-          ),
+        elevation: 5,
+        shadowColor: Colors.grey.shade100,
+        title: const Text(
+          "GetX Counter App",
         ),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => Get.to(Other()),
-          child: const Text("Get to Other"),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Obx(
+              () => Hero(
+                tag: "count",
+                child: Text(
+                  "Clicks: ${controller.count}",
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            ElevatedButton(
+              onPressed: () => Get.to(() => Other()),
+              child: Text(
+                "Get to Other",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .apply(color: Colors.white),
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -52,9 +86,18 @@ class Other extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-          "${controller.count}",
+        child: Hero(
+          tag: "count",
+          child: Text(
+            "${controller.count}",
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.back(),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.arrow_back),
       ),
     );
   }
